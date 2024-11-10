@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
+import Script from "next/script";
+import StateProvider from "@/state/StateProvider";
 
 export const metadata: Metadata = {
 	title: "Checkout Xperience",
@@ -20,8 +22,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${polySans.variable} bg-white`}>
-				<main className="font-polySans">{children}</main>
+				<StateProvider>
+					<main className="font-polySans">{children}</main>
+				</StateProvider>
 			</body>
+			<Script src="https://www.google.com/recaptcha/api.js" />
 		</html>
 	);
 }

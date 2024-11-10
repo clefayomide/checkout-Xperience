@@ -8,14 +8,19 @@ const RadioGroup = (props: RadioGroupType) => {
 	const {
 		options,
 		name,
-		legend,
 		fieldsetClassName = "",
 		wrapperClassName = "",
 	} = props;
 	return (
-		<Fieldset className={classnames("", fieldsetClassName)} legend={legend}>
+		<Fieldset
+			className={classnames("", fieldsetClassName)}
+			legend="Choose a payment method"
+		>
 			{options.map(
-				({ id, label, labelClassName = "", iconBefore: Icon }, index) => (
+				(
+					{ id, label, labelClassName = "", iconBefore: Icon, ...rest },
+					index
+				) => (
 					<div
 						key={`${name}-${index}`}
 						className="flex gap-5 h-[60px] rounded has-[:checked]:border has-[:checked]:bg-indigo-50 has-[:checked]:!font-bold has-[:checked]:ring-indigo-200 p-5 items-center mt-3"
@@ -30,6 +35,7 @@ const RadioGroup = (props: RadioGroupType) => {
 							id={id}
 							name={name}
 							label={label}
+							{...rest}
 						/>
 					</div>
 				)

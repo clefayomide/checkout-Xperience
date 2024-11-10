@@ -13,13 +13,12 @@ export type RadioGroupOptionType = Array<
 		id: string;
 		label: string;
 		iconBefore?: () => React.JSX.Element;
-	} & Pick<RadioType, "labelClassName">
+	} & Partial<RadioType>
 >;
 
 export type RadioGroupType = {
 	name: string;
 	options: RadioGroupOptionType;
-	legend?: string;
 	fieldsetClassName?: string;
 } & Pick<RadioType, "wrapperClassName">;
 
@@ -38,4 +37,29 @@ export type TypographyPropType = {
 	variant?: TypographyVariantType;
 	children: React.ReactNode;
 	className?: string;
+};
+
+export type InputPropType = {
+	labelClassName?: string;
+	label: string;
+	errorMessage?: string;
+} & JSX.IntrinsicElements["input"];
+
+export type CardDataType = {
+	number: string;
+	expiry: string;
+	cvc: string;
+};
+
+export type AppStateType = {
+	card: CardDataType;
+} | null;
+
+export type CheckoutFieldName = "cardNumber" | "expiryDate" | "cvvNumber";
+
+export type CheckoutFormFields = {
+	[key in CheckoutFieldName]: {
+		value: string;
+		error: string;
+	};
 };

@@ -34,7 +34,7 @@ const Radio = (props: RadioType) => {
 				name={name}
 				type="radio"
 				className={classnames(
-					"w-[20px] checked:accent-black h-[20px]",
+					"w-[20px] checked:accent-blue-600 h-[20px]",
 					className
 				)}
 				{...rest}
