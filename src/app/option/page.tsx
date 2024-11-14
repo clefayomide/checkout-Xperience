@@ -10,7 +10,7 @@ const page = () => {
 	}
 	return (
 		<Form action={handleOption} className="h-full">
-			<PaymentMethods />;
+			<PaymentMethods />
 		</Form>
 	);
 };
