@@ -10,28 +10,36 @@ import {
 } from "@/utils";
 import { CheckoutFieldName, CheckoutFormFields } from "@/types";
 import { Button } from "../atom/button";
+import useValidate from "@/hook/useValidate";
+import { formFields } from "@/constants";
 
 const CardForm = () => {
+	const { validateFields } = useValidate();
 	const [formData, setFormData] = useState<CheckoutFormFields>({
 		cardNumber: { value: "", error: "" },
 		expiryDate: { value: "", error: "" },
 		cvvNumber: { value: "", error: "" },
 	});
+	
 	const formIsValid = useMemo(() => {
 		return Object.values(formData).every((field) => {
 			return field.value && !field.error;
 		});
 	}, [formData]);
+
 	const handleOnPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		const formattedData = handleNumberOnlyPaste(e);
 		const key = e.currentTarget.name as CheckoutFieldName;
+		const result = validateFields({ field: key, value: formattedData });
+
 		setFormData((prev) => {
 			return {
 				...prev,
 				[key]: {
 					...prev[key],
 					value: formattedData,
+					error: result.error,
 				},
 			};
 		});
@@ -53,6 +61,8 @@ const CardForm = () => {
 			formattedCreditCardNumber = formatCreditCardNumber(value);
 		}
 
+		const result = validateFields({ field: name, value });
+
 		setFormData((prev) => {
 			return {
 				...prev,
@@ -63,6 +73,7 @@ const CardForm = () => {
 						: isExpiryDateField
 						? formattedExpiryDate
 						: value,
+					error: result.error,
 				},
 			};
 		});
@@ -84,7 +95,7 @@ const CardForm = () => {
 					onKeyDown={handleNumberOnlyKeyPress}
 					onPaste={handleOnPaste}
 					onChange={handleOnChange}
-					name="cardNumber"
+					name={formFields.cardNumber}
 					required
 					errorMessage={formData.cardNumber.error}
 					value={formData.cardNumber.value}
@@ -101,7 +112,7 @@ const CardForm = () => {
 						onKeyDown={handleNumberOnlyKeyPress}
 						onPaste={handleOnPaste}
 						onChange={handleOnChange}
-						name="expiryDate"
+						name={formFields.expiryDate}
 						required
 						errorMessage={formData.expiryDate.error}
 						value={formData.expiryDate.value}
@@ -114,7 +125,7 @@ const CardForm = () => {
 						className="w-full rounded"
 						labelClassName="text-sm"
 						placeholder="365"
-						name="cvvNumber"
+						name={formFields.cvvNumber}
 						onKeyDown={handleNumberOnlyKeyPress}
 						onPaste={handleOnPaste}
 						onChange={handleOnChange}

@@ -63,3 +63,13 @@ export type CheckoutFormFields = {
 		error: string;
 	};
 };
+
+export type ValidateFieldsType = {
+	field: string;
+	value: string;
+};
+
+export type ValidateFieldsReturnType = {
+	field: string;
+	error: string;
+};

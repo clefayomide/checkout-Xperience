@@ -34,10 +34,8 @@ export const handleNumberOnlyPaste = (
 			ret += char;
 		}
 	}
-	return ret;
+	return formatCreditCardNumber(ret);
 };
-
-export const validateCheckoutFields = () => {};
 
 export const formatCreditCardNumber = (value: string) => {
 	return value
@@ -52,4 +50,24 @@ export const formatExpirationDate = (value: string) => {
 		return `${value.slice(0, 2)} / ${value.slice(2)}`;
 	}
 	return value;
+};
+
+export const validateCCNumber = (cardNumber: string) => {
+	const formattedCardNumber = cardNumber
+		.replaceAll(" ", "")
+		.split("")
+		.map(Number);
+	for (let i = formattedCardNumber.length - 2; i >= 0; i -= 2) {
+		let temp = formattedCardNumber[i] * 2;
+		if (temp > 9) {
+			temp = (temp % 10) + 1;
+		}
+		formattedCardNumber[i] = temp;
+	}
+
+	let total = 0;
+	for (const i of formattedCardNumber) {
+		total += i;
+	}
+	return total % 10 === 0;
 };

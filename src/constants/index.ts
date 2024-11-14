@@ -26,4 +26,13 @@ export const paymentOptions: RadioGroupOptionType = [
 ];
 
 export const allowedKeys = ["backspace", "control"];
+export const appMsg = {
+	creditCardReq: "card number is required",
+	invalidCreditCard: "invalid card number",
+};
 
+export const formFields = {
+	cardNumber: "cardNumber",
+	expiryDate: "expiryDate",
+	cvvNumber: "cvvNumber",
+};
