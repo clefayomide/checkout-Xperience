@@ -88,7 +88,6 @@ const CardForm = () => {
 		);
 		return cardType?.cardImage;
 	}, [formData.cardNumber.value, detectCardType]);
-	console.log(!formIsValid);
 	return (
 		<Fieldset
 			legend="Enter your card details"
