@@ -12,15 +12,18 @@ import { CheckoutFieldName, CheckoutFormFields } from "@/types";
 import { Button } from "../atom/button";
 import useValidate from "@/hook/useValidate";
 import { formFields } from "@/constants";
+import useCardType from "@/hook/useCardType";
+import { UnknownCard } from "@/assests";
 
 const CardForm = () => {
 	const { validateFields } = useValidate();
+	const { detectCardType } = useCardType();
 	const [formData, setFormData] = useState<CheckoutFormFields>({
 		cardNumber: { value: "", error: "" },
 		expiryDate: { value: "", error: "" },
 		cvvNumber: { value: "", error: "" },
 	});
-	
+
 	const formIsValid = useMemo(() => {
 		return Object.values(formData).every((field) => {
 			return field.value && !field.error;
@@ -78,6 +81,14 @@ const CardForm = () => {
 			};
 		});
 	};
+
+	const cardIcon = useMemo(() => {
+		const cardType = detectCardType(
+			formData.cardNumber.value.replaceAll(" ", "")
+		);
+		return cardType?.cardImage;
+	}, [formData.cardNumber.value, detectCardType]);
+	console.log(!formIsValid);
 	return (
 		<Fieldset
 			legend="Enter your card details"
@@ -87,12 +98,16 @@ const CardForm = () => {
 				<div className="mt-8">
 					<SupportedCards />
 				</div>
+
 				<Input
 					label="Card Number"
+					id="cardNumber"
 					className="w-full rounded"
 					labelClassName="mt-10 text-sm"
+					autoComplete="cc-number"
 					placeholder="4234 3457 2367 5748"
 					onKeyDown={handleNumberOnlyKeyPress}
+					endContent={cardIcon}
 					onPaste={handleOnPaste}
 					onChange={handleOnChange}
 					name={formFields.cardNumber}
@@ -103,28 +118,33 @@ const CardForm = () => {
 					inputMode="numeric"
 					maxLength={23}
 				/>
+
 				<div className="flex gap-5  mt-8">
 					<Input
 						label="Expiry Date"
+						id="expDate"
 						className="w-full rounded"
 						labelClassName="text-sm"
 						placeholder="MM / YY"
 						onKeyDown={handleNumberOnlyKeyPress}
 						onPaste={handleOnPaste}
 						onChange={handleOnChange}
+						autoComplete="cc-exp"
 						name={formFields.expiryDate}
 						required
 						errorMessage={formData.expiryDate.error}
 						value={formData.expiryDate.value}
-						pattern="[0-9\s]+"
 						inputMode="numeric"
 						maxLength={7}
+						endContent={<UnknownCard />}
 					/>
 					<Input
 						label="Cvv Number"
+						id="ccvNumber"
 						className="w-full rounded"
 						labelClassName="text-sm"
 						placeholder="365"
+						autoComplete="cc-csc"
 						name={formFields.cvvNumber}
 						onKeyDown={handleNumberOnlyKeyPress}
 						onPaste={handleOnPaste}
@@ -135,6 +155,7 @@ const CardForm = () => {
 						pattern="[0-9\s]+"
 						inputMode="numeric"
 						maxLength={3}
+						endContent={<UnknownCard />}
 					/>
 				</div>
 			</div>

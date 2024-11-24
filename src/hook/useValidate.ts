@@ -1,6 +1,6 @@
 import { appMsg, formFields } from "@/constants";
 import { ValidateFieldsReturnType, ValidateFieldsType } from "@/types";
-import { validateCCNumber } from "@/utils";
+import { validateCCNumber, validateExpiryDate } from "@/utils";
 
 const useValidate = () => {
 	const validateFields = ({
@@ -13,15 +13,30 @@ const useValidate = () => {
 			case formFields.cardNumber:
 				if (!value) {
 					result.error = appMsg.creditCardReq;
-					return result;
 				}
 				if (!validateCCNumber(value)) {
 					result.error = appMsg.invalidCreditCard;
-					return result;
+				}
+				return result;
+			case formFields.expiryDate:
+				if (!value) {
+					result.error = appMsg.expDateReq;
 				}
 
+				if (!validateExpiryDate(value)) {
+					result.error = appMsg.invalidExpDate;
+				}
+				return result;
+			case formFields.cvvNumber:
+				if (!value) {
+					result.error = appMsg.cvvReq;
+				}
+				if (value.length < 3) {
+					result.error = appMsg.invalidCvv;
+				}
+				return result;
 			default:
-				return { error: "", field };
+				return result;
 		}
 	};
 	return { validateFields };

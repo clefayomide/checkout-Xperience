@@ -29,10 +29,20 @@ export const allowedKeys = ["backspace", "control"];
 export const appMsg = {
 	creditCardReq: "card number is required",
 	invalidCreditCard: "invalid card number",
+	expDateReq: "expiry date is required",
+	invalidExpDate: "invalid expiry date",
+	cvvReq: "cvv number is required",
+	invalidCvv: "invalid cvv number",
 };
 
 export const formFields = {
 	cardNumber: "cardNumber",
 	expiryDate: "expiryDate",
 	cvvNumber: "cvvNumber",
+};
+
+export const cardTypeRegexes = {
+	visa: /^4\d{12}(?:\d{3})?$/,
+	mastercard: /^5[1-5]\d{14}$/,
+	amex: /^3[47]\d{13}$/,
 };

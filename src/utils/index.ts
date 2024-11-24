@@ -71,3 +71,12 @@ export const validateCCNumber = (cardNumber: string) => {
 	}
 	return total % 10 === 0;
 };
+
+export const validateExpiryDate = (expiryDate: string) => {
+	const [month, year] = expiryDate.split("/");
+	const dateString = `${month}-1-${year}`.replaceAll(" ", "");
+	const expDateMilisec = new Date(dateString).setSeconds(0);
+	const currentDateMilisec = new Date().setSeconds(0);
+	return expDateMilisec > currentDateMilisec;
+
+};

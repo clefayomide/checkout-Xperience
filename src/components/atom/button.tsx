@@ -8,7 +8,7 @@ export const Button = (props: ButtonPropType) => {
 			variant === "secondary" &&
 			"bg-button_secondary_background text-button_secondary_color"
 		}`,
-		`h-[48px] disabled:!bg-blue disabled:!cursor-not-allowed rounded-md px-5 font-normal text-base outline-none border-none focus:outline-none focus:border-none`,
+		`h-[48px] disabled:!bg-blue-400 disabled:!cursor-not-allowed rounded-md px-5 font-normal text-base outline-none border-none focus:outline-none focus:border-none`,
 
 		className
 	);

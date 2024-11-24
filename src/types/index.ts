@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type RadioType = {
 	label: string;
 	id: string;
@@ -43,6 +45,7 @@ export type InputPropType = {
 	labelClassName?: string;
 	label: string;
 	errorMessage?: string;
+	endContent?: ReactNode;
 } & JSX.IntrinsicElements["input"];
 
 export type CardDataType = {
