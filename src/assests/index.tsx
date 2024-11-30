@@ -76,6 +76,9 @@ export const Bitcoin = () => {
 export const Visa = () => {
 	return (
 		<svg
+			data-testid="visa"
+			role="img"
+			aria-label="visa"
 			width="35"
 			height="24"
 			viewBox="0 0 35 24"
@@ -104,6 +107,9 @@ export const Visa = () => {
 export const MasterCard = () => {
 	return (
 		<svg
+			data-testid="mastercard"
+			role="img"
+			aria-label="mastercard"
 			width="35"
 			height="24"
 			viewBox="0 0 35 24"
@@ -144,6 +150,9 @@ export const MasterCard = () => {
 export const Amex = () => {
 	return (
 		<svg
+			role="img"
+			aria-label="amex"
+			data-testid="amex"
 			width="35"
 			height="24"
 			viewBox="0 0 35 24"

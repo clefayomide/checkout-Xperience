@@ -46,3 +46,10 @@ export const cardTypeRegexes = {
 	mastercard: /^5[1-5]\d{14}$/,
 	amex: /^3[47]\d{13}$/,
 };
+
+export const testCards = {
+	visa: ["4000000000002503"],
+	mastercard: ["5123450000000008"],
+	verve: ["5060990580000217499"],
+	amex: ["378282246310005"],
+};

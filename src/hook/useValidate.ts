@@ -14,7 +14,7 @@ const useValidate = () => {
 				if (!value) {
 					result.error = appMsg.creditCardReq;
 				}
-				if (!validateCCNumber(value)) {
+				if (value && !validateCCNumber(value)) {
 					result.error = appMsg.invalidCreditCard;
 				}
 				return result;
@@ -23,7 +23,7 @@ const useValidate = () => {
 					result.error = appMsg.expDateReq;
 				}
 
-				if (!validateExpiryDate(value)) {
+				if (value && !validateExpiryDate(value)) {
 					result.error = appMsg.invalidExpDate;
 				}
 				return result;
@@ -31,7 +31,7 @@ const useValidate = () => {
 				if (!value) {
 					result.error = appMsg.cvvReq;
 				}
-				if (value.length < 3) {
+				if (value && value.length < 3) {
 					result.error = appMsg.invalidCvv;
 				}
 				return result;

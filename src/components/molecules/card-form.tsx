@@ -101,6 +101,7 @@ const CardForm = () => {
 				<Input
 					label="Card Number"
 					id="cardNumber"
+					data-testid="card-number-input"
 					className="w-full rounded"
 					labelClassName="mt-10 text-sm"
 					autoComplete="cc-number"
@@ -121,6 +122,7 @@ const CardForm = () => {
 				<div className="flex gap-5  mt-8">
 					<Input
 						label="Expiry Date"
+						data-testid="card-exp-input"
 						id="expDate"
 						className="w-full rounded"
 						labelClassName="text-sm"
@@ -140,6 +142,7 @@ const CardForm = () => {
 					<Input
 						label="Cvv Number"
 						id="ccvNumber"
+						data-testid="card-cvv-input"
 						className="w-full rounded"
 						labelClassName="text-sm"
 						placeholder="365"
