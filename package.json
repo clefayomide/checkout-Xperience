@@ -8,7 +8,9 @@
 		"start": "next start",
 		"lint": "next lint",
 		"test": "NODE_ENV=test jest --env=jsdom",
-		"test:watch": "jest --watch --env=jsdom"
+		"test:watch": "jest --watch --env=jsdom",
+		"localTest": "jest --env=jsdom"
+
 	},
 	"dependencies": {
 		"next": "15.0.2",
