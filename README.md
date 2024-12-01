@@ -5,6 +5,7 @@ This is a Next.js application designed to simulate a payment gateway checkout, w
 ## Technologies
 
 - Next.js framework
+- React Testing Library & Jest for unit tests
 - Context API + useReducer for state management
 - TypeScript for type safety and improved development experience
 - TailwindCSS for styling
