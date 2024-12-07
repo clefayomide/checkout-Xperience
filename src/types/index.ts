@@ -49,9 +49,9 @@ export type InputPropType = {
 } & JSX.IntrinsicElements["input"];
 
 export type CardDataType = {
-	number: string;
-	expiry: string;
-	cvc: string;
+	cardNumber: string;
+	expiryDate: string;
+	cvvNumber: string;
 };
 
 export type AppStateType = {
@@ -75,4 +75,17 @@ export type ValidateFieldsType = {
 export type ValidateFieldsReturnType = {
 	field: string;
 	error: string;
+};
+
+export type RecaptchaResponseType = {
+	status: boolean;
+	code: number;
+	message: string;
+	data: {
+		success: boolean;
+		challenge_ts: string;
+		hostname: string;
+		score: number;
+		action: string;
+	};
 };

@@ -15,7 +15,7 @@ import { formFields } from "@/constants";
 import useCardType from "@/hook/useCardType";
 import { UnknownCard } from "@/assests";
 
-const CardForm = () => {
+const CardForm = ({ isLoading }: { isLoading: boolean }) => {
 	const { validateFields } = useValidate();
 	const { detectCardType } = useCardType();
 	const [formData, setFormData] = useState<CheckoutFormFields>({
@@ -162,7 +162,7 @@ const CardForm = () => {
 				</div>
 			</div>
 			<Button
-				disabled={!formIsValid}
+				disabled={!formIsValid || isLoading}
 				type="submit"
 				variant="primary"
 				className="w-full font-semibold h-[46px] absolute md:static md:mt-16 bottom-0"

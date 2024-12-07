@@ -53,3 +53,15 @@ export const testCards = {
 	verve: ["5060990580000217499"],
 	amex: ["378282246310005"],
 };
+
+export const appGenerics = {
+	maxRecaptchaScore: 0.9,
+	badRequest: {
+		code: 400,
+		status: false,
+	},
+	successfulRequest: {
+		status: true,
+		code: 200,
+	},
+};

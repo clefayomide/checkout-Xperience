@@ -3,6 +3,7 @@ import { ValidateFieldsReturnType, ValidateFieldsType } from "@/types";
 import { validateCCNumber, validateExpiryDate } from "@/utils";
 
 const useValidate = () => {
+	// This Function validates each fields in the checkout form
 	const validateFields = ({
 		field,
 		value,

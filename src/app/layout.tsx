@@ -21,12 +21,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${polySans.variable} bg-white`}>
+			<body className={`${polySans.variable} bg-slate-50`}>
 				<StateProvider>
 					<main className="font-polySans">{children}</main>
 				</StateProvider>
+				<Script
+					src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_SITE_KEY}`}
+				/>
 			</body>
-			<Script src="https://www.google.com/recaptcha/api.js" />
 		</html>
 	);
 }
