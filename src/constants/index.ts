@@ -55,7 +55,7 @@ export const testCards = {
 };
 
 export const appGenerics = {
-	maxRecaptchaScore: 1.0,
+	maxRecaptchaScore: 0.9,
 	badRequest: {
 		code: 400,
 		status: false,
