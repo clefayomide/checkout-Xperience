@@ -9,7 +9,8 @@
 		"lint": "next lint",
 		"test": "NODE_ENV=test jest --env=jsdom",
 		"test:watch": "jest --watch --env=jsdom",
-		"localTest": "jest --env=jsdom"
+		"localTest": "jest --env=jsdom",
+		"localBuild": "SET NODE_ENV=test && yarn run localTest && next build"
 
 	},
 	"dependencies": {
