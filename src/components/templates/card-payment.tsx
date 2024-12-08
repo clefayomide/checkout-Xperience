@@ -1,17 +1,18 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent } from "react";
 import CardForm from "../molecules/card-form";
-import { CardDataType } from "@/types";
+import { CardDataType, HOCPropType } from "@/types";
 import useRecaptcha from "@/hook/useRecaptcha";
 import Recaptcha from "../atom/recaptcha";
+import WithLoader from "../hoc/loader";
 
-const CardPayment = () => {
+const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
 	const handlePaymentProcess = () => {
-		setIsSubmitting(true);
+		setLoading(true);
 	};
 	const { initRecaptcha, showV2Checkbox } = useRecaptcha({
 		onFinish: handlePaymentProcess,
 	});
-	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const data = Object.fromEntries(
@@ -28,10 +29,10 @@ const CardPayment = () => {
 				onSubmit={handleSubmit}
 				className="flex h-full flex-col justify-between md:items-center md:justify-center md:gap-20 md:w-[50%] xl:w-[30%] rounded-lg m-auto"
 			>
-				<CardForm isLoading={isSubmitting} />
+				<CardForm isLoading={isLoading} />
 			</form>
 		</>
 	);
 };
 
-export default CardPayment;
+export default WithLoader(CardPayment, "Processing");

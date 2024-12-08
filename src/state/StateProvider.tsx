@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ReactNode, useMemo, useReducer } from "react";
 import { AppContext } from "./context";
 import { appReducerFunc } from "./reducer";

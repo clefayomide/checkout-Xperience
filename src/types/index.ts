@@ -89,3 +89,8 @@ export type RecaptchaResponseType = {
 		action: string;
 	};
 };
+
+export type HOCPropType = {
+	setLoading: (isComponentLoading: boolean) => void;
+	isLoading: boolean;
+}
