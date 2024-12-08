@@ -6,13 +6,15 @@ import { decrypt, encrypt } from "@/utils";
 import { config } from "@/config";
 
 const StateProvider = ({ children }: { children: ReactNode }) => {
-	
 	const initialState = useMemo(() => {
-		const persistedData = sessionStorage.getItem("checkout");
-		const decryptedData = persistedData
-			? decrypt(persistedData, config.publicEncKey as string)
-			: null;
-		return decryptedData;
+		if (typeof window !== "undefined") {
+			const persistedData = window.sessionStorage.getItem("checkout");
+			const decryptedData = persistedData
+				? decrypt(persistedData, config.publicEncKey as string)
+				: null;
+			return decryptedData;
+		}
+		return null;
 	}, []);
 
 	const [state, dispatch] = useReducer(appReducerFunc, initialState);
@@ -22,8 +24,10 @@ const StateProvider = ({ children }: { children: ReactNode }) => {
 	}, [state]);
 
 	const storeDataInStorage = useCallback(() => {
-		const encryptedData = encrypt(state, config.publicEncKey as string);
-		sessionStorage.setItem("checkout", encryptedData);
+		if (typeof window !== "undefined") {
+			const encryptedData = encrypt(state, config.publicEncKey as string);
+			window.sessionStorage.setItem("checkout", encryptedData);
+		}
 	}, [state]);
 
 	useEffect(() => {
