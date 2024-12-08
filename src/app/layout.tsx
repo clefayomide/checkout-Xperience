@@ -3,6 +3,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Script from "next/script";
 import StateProvider from "@/state/StateProvider";
+import { config } from "@/config";
 
 export const metadata: Metadata = {
 	title: "Checkout Xperience",
@@ -26,7 +27,7 @@ export default function RootLayout({
 					<main className="font-polySans">{children}</main>
 				</StateProvider>
 				<Script
-					src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_SITE_KEY}`}
+					src={`https://www.google.com/recaptcha/api.js?render=${config.siteKey}`}
 				/>
 			</body>
 		</html>

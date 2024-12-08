@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appGenerics } from "@/constants";
+import { config } from "@/config";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
 
 	const res = await fetch(
 		`https://www.google.com/recaptcha/api/siteverify?secret=${
-			fallback ? process.env.SECRET_KEY_v2 : process.env.SECRET_KEY
+			fallback ? config.secretKeyV2 : config.secretKey
 		}&response=${token}`,
 		{
 			method: "POST",

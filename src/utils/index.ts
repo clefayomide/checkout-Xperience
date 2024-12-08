@@ -1,5 +1,6 @@
 import { allowedKeys } from "@/constants";
-import React from "react";
+import { AppStateType } from "@/types";
+import CryptoJS from "crypto-js";
 
 export const classnames = (...args: string[]) => {
 	let ret = "";
@@ -78,5 +79,14 @@ export const validateExpiryDate = (expiryDate: string) => {
 	const expDateMilisec = new Date(dateString).setSeconds(0);
 	const currentDateMilisec = new Date().setSeconds(0);
 	return expDateMilisec > currentDateMilisec;
+};
 
+export const encrypt = (data: Partial<AppStateType>, key: string) => {
+	return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
+};
+
+export const decrypt = (data: string, key: string) => {
+	const bytes = CryptoJS.AES.decrypt(data, key);
+	const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+	return decryptedData;
 };

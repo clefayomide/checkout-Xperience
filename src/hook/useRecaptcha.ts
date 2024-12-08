@@ -1,6 +1,7 @@
 import { appGenerics } from "@/constants";
 import { RecaptchaResponseType } from "@/types";
 import { useState } from "react";
+import { config } from "@/config";
 
 const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
 	// This code is responsible for handling the reCAPTCHA verification and fallback to v2 if necessary
@@ -33,7 +34,7 @@ const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
 					fallbackToV2 = true;
 					setShowV2Checkbox(true);
 					return window.grecaptcha.render("recaptcha-container", {
-						sitekey: process.env.NEXT_PUBLIC_SITE_KEY_v2,
+						sitekey: config.siteKeyV2,
 						theme: "light",
 						callback: verifyRecaptchaToken,
 					});
@@ -55,7 +56,7 @@ const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
 			window.grecaptcha.ready(async function () {
 				try {
 					const token = await window.grecaptcha.execute(
-						process.env.NEXT_PUBLIC_SITE_KEY as string,
+						config.siteKey as string,
 						{
 							action: "submit",
 						}
