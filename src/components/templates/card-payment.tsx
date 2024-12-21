@@ -1,24 +1,43 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useContext } from "react";
 import CardForm from "../molecules/card-form";
 import { CardDataType, HOCPropType } from "@/types";
 import useRecaptcha from "@/hook/useRecaptcha";
 import Recaptcha from "../atom/recaptcha";
 import WithLoader from "../hoc/loader";
+import { AppContext } from "@/state/context";
+import { ActionType } from "@/state/action";
+import { cleanUpCardData } from "@/utils";
 
 const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
-	const handlePaymentProcess = () => {
-		setLoading(true);
+	const app = useContext(AppContext);
+	const handlePaymentProcess = async () => {
+		try {
+			const response = await fetch("api/card-purchase", {
+				method: "POST",
+				body: JSON.stringify(app?.state?.card),
+			});
+			const formattedResponse = await response.json();
+			console.log(formattedResponse);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	};
+
 	const { initRecaptcha, showV2Checkbox } = useRecaptcha({
 		onFinish: handlePaymentProcess,
+		onInit: () => setLoading(!isLoading),
 	});
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const data = Object.fromEntries(
-			new FormData(e.currentTarget).entries()
-		) as CardDataType;
-		console.log(data);
+		const cardData = cleanUpCardData(
+			Object.fromEntries(
+				new FormData(e.currentTarget).entries()
+			) as CardDataType
+		);
+
+		app?.dispatch({ type: ActionType.SET_CARD_DATA, payload: cardData });
 		initRecaptcha();
 	};
 

@@ -9,7 +9,7 @@ export const appReducerFunc = (
 		case ActionType.SET_CARD_DATA:
 			return {
 				...state,
-				card: { ...action.payload },
+				card: action.payload,
 			};
 
 		default:

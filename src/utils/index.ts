@@ -1,5 +1,5 @@
-import { allowedKeys } from "@/constants";
-import { AppStateType } from "@/types";
+import { allowedKeys, providers } from "@/constants";
+import { AppStateType, CardDataType } from "@/types";
 import CryptoJS from "crypto-js";
 
 export const classnames = (...args: string[]) => {
@@ -89,4 +89,18 @@ export const decrypt = (data: string, key: string) => {
 	const bytes = CryptoJS.AES.decrypt(data, key);
 	const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 	return decryptedData;
+};
+
+export const cleanUpCardData = (cardData: CardDataType) => {
+	return {
+		cardNumber: cardData.cardNumber.replace(/\s+/g, ""),
+		expiryDate: cardData.expiryDate.replaceAll(" / ", ""),
+		cvvNumber: cardData.cvvNumber.replace(/\s+/g, ""),
+	};
+};
+
+export const getProvider = () => {
+	const randomNumber = Math.floor(Math.random() * 2) + 1;
+	const selectedProvider = providers[randomNumber - 1];
+	return selectedProvider;
 };

@@ -64,4 +64,11 @@ export const appGenerics = {
 		status: true,
 		code: 200,
 	},
+	serverError: {
+		status: false,
+		code: 500,
+	},
 };
+
+export const providers = ["providerA", "providerB"];
+

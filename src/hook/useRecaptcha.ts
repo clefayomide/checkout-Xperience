@@ -1,15 +1,21 @@
 import { appGenerics } from "@/constants";
-import { RecaptchaResponseType } from "@/types";
+import { RecaptchaResponseType, UseRecaptchaHookPropType } from "@/types";
 import { useState } from "react";
 import { config } from "@/config";
 
-const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
+const useRecaptcha = ({ onFinish, onInit }: UseRecaptchaHookPropType) => {
 	// This code is responsible for handling the reCAPTCHA verification and fallback to v2 if necessary
 	// It uses the provided reCAPTCHA site key and version (v2 or v3) based on the score obtained from the reCAPTCHA verification
 	// The verification token is sent to the server for verification and the result is handled accordingly
 	// If the score is above or equal to the maximum allowed score, the onFinish callback is called
 	// If the score is below the maximum allowed score, the reCAPTCHA v2 is rendered and the verifyRecaptchaToken function is called again
 	// The fallbackToV2 flag is used to switch between reCAPTCHA v2 and v3 when necessary
+
+	const handleOnInit = () => {
+		if (onInit) {
+			onInit();
+		}
+	};
 
 	const [showV2Checkbox, setShowV2Checkbox] = useState(false);
 	let fallbackToV2 = false;
@@ -55,6 +61,7 @@ const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
 		if (typeof window !== "undefined" && window.grecaptcha) {
 			window.grecaptcha.ready(async function () {
 				try {
+					handleOnInit();
 					const token = await window.grecaptcha.execute(
 						config.siteKey as string,
 						{
@@ -63,7 +70,7 @@ const useRecaptcha = ({ onFinish }: { onFinish: () => void }) => {
 					);
 					await verifyRecaptchaToken(token);
 				} catch (error) {
-					console.error(error);
+					handleOnInit();
 					throw error;
 				}
 			});

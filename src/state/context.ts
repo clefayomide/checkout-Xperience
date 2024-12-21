@@ -1,8 +1,7 @@
-import { AppStateType } from "@/types";
-import React, { createContext } from "react";
-import { Action } from "./action";
+import { AppContextType } from "@/types";
+import { createContext } from "react";
 
-export const AppContext = createContext<{
-	state: AppStateType;
-	dispatch: React.Dispatch<Action>;
-} | null>(null);
+export const AppContext = createContext<AppContextType>({
+	state: null,
+	dispatch: () => {},
+});

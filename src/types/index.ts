@@ -1,3 +1,4 @@
+import { Action } from "@/state/action";
 import { ReactNode } from "react";
 
 export type RadioType = {
@@ -93,4 +94,59 @@ export type RecaptchaResponseType = {
 export type HOCPropType = {
 	setLoading: (isComponentLoading: boolean) => void;
 	isLoading: boolean;
+};
+
+export type UseRecaptchaHookPropType = {
+	onFinish: () => Promise<void>;
+	onInit?: () => void;
+};
+
+export type AppContextType = {
+	state: AppStateType;
+	dispatch: React.Dispatch<Action>;
+} | null;
+
+export type PaymentProcessResponseType = {
+	code: number;
+	status: boolean;
+	message: string;
+	data: {
+		transactionRef: string;
+		amount: number;
+		provider: string;
+	};
+};
+
+export type PurchaseCallResponseType = {
+	status: boolean;
+	code: number;
+	message: string;
+	data: { pin: boolean; provider: string; sessionId: string };
+};
+
+export type TransactionConfirmationType = {
+	status: boolean;
+	code: number;
+	message: string;
+	data: { amount: number; transactionRef: string };
+};
+
+export type PurchaseDetails = CardDataType & { pin?: string; amount: number };
+export type BaseStrategy = {
+	confirmPayment(transactionRef: string): Promise<TransactionConfirmationType>;
+	setStrategy(strategy: Strategy): void;
+	makePayment(): Promise<PaymentProcessResponseType | PurchaseCallResponseType>;
+};
+
+export type PayType = (
+	selectedProvider: string,
+	purchaseDetails: PurchaseDetails
+) => Promise<PurchaseCallResponseType>;
+export interface ProviderAStrategy {
+	pay: PayType;
 }
+export interface ProviderBStrategy {
+	pay: PayType;
+}
+
+export type Strategy = ProviderAStrategy | ProviderBStrategy;
