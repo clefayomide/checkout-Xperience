@@ -71,11 +71,11 @@ const CardForm = ({ isLoading }: { isLoading: boolean }) => {
 				...prev,
 				[name]: {
 					...prev[name],
-					value: isCreditCardField
-						? formattedCreditCardNumber
-						: isExpiryDateField
-						? formattedExpiryDate
-						: value,
+					value: (() => {
+						if (isCreditCardField) return formattedCreditCardNumber;
+						if (isExpiryDateField) return formattedExpiryDate;
+						return value;
+					})(),
 					error: result.error,
 				},
 			};
