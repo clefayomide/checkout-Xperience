@@ -6,7 +6,7 @@ import Recaptcha from "../atom/recaptcha";
 import WithLoader from "../hoc/loader";
 import { AppContext } from "@/state/context";
 import { ActionType } from "@/state/action";
-import { cleanUpCardData } from "@/utils";
+import { cleanUpCardData, validateCCNumber, validateExpiryDate } from "@/utils";
 
 const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
 	const app = useContext(AppContext);
@@ -31,13 +31,22 @@ const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const cardData = cleanUpCardData(
-			Object.fromEntries(
-				new FormData(e.currentTarget).entries()
-			) as CardDataType
-		);
+		const cardData = Object.fromEntries(
+			new FormData(e.currentTarget).entries()
+		) as CardDataType;
+		
+		if (
+			!validateCCNumber(cardData.cardNumber) ||
+			!validateExpiryDate(cardData.expiryDate) ||
+			cardData.cvvNumber.length < 3
+		) {
+			return;
+		}
 
-		app?.dispatch({ type: ActionType.SET_CARD_DATA, payload: cardData });
+		app?.dispatch({
+			type: ActionType.SET_CARD_DATA,
+			payload: cleanUpCardData(cardData),
+		});
 		initRecaptcha();
 	};
 

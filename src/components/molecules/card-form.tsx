@@ -18,6 +18,7 @@ import { UnknownCard } from "@/assests";
 const CardForm = ({ isLoading }: { isLoading: boolean }) => {
 	const { validateFields } = useValidate();
 	const { detectCardType } = useCardType();
+	
 	const [formData, setFormData] = useState<CheckoutFormFields>({
 		cardNumber: { value: "", error: "" },
 		expiryDate: { value: "", error: "" },
