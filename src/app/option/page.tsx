@@ -6,7 +6,7 @@ import { FormEvent } from "react";
 
 const Page = () => {
 	const router = useRouter();
-	
+
 	const handleSelection = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const method = Object.fromEntries(
