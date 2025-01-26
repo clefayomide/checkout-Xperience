@@ -10,7 +10,7 @@ const StateProvider = ({ children }: { children: ReactNode }) => {
 		if (typeof window !== "undefined") {
 			const persistedData = window.sessionStorage.getItem("checkout");
 			const decryptedData = persistedData
-				? decrypt(persistedData, config.publicEncKey as string)
+				? decrypt(persistedData, config.publicEncKey)
 				: null;
 			return decryptedData;
 		}
@@ -25,7 +25,7 @@ const StateProvider = ({ children }: { children: ReactNode }) => {
 
 	const storeDataInStorage = useCallback(() => {
 		if (typeof window !== "undefined") {
-			const encryptedData = encrypt(state, config.publicEncKey as string);
+			const encryptedData = encrypt(state as never, config.publicEncKey);
 			window.sessionStorage.setItem("checkout", encryptedData);
 		}
 	}, [state]);
