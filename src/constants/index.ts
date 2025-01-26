@@ -70,5 +70,4 @@ export const appGenerics = {
 	},
 };
 
-export const providers = ["providerA", "providerB"];
-
+export const providers = ["provider A", "provider B"];

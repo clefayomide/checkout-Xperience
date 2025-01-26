@@ -1,5 +1,5 @@
 import { allowedKeys, providers } from "@/constants";
-import { AppStateType, CardDataType } from "@/types";
+import { CardDataType } from "@/types";
 import CryptoJS from "crypto-js";
 
 export const classnames = (...args: string[]) => {
@@ -81,7 +81,7 @@ export const validateExpiryDate = (expiryDate: string) => {
 	return expDateMilisec > currentDateMilisec;
 };
 
-export const encrypt = (data: Partial<AppStateType>, key: string) => {
+export const encrypt = (data: Record<string, unknown>, key: string) => {
 	return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
 };
 

@@ -40,27 +40,23 @@ export async function POST(request: NextRequest) {
 		);
 	}
 
-	const selectedProvider = getProvider();
-	let paymentProcess: PaymentProcess;
 	const purchaseDetails = {
 		...body,
-		amount: 100,
+		amount: 2000,
 	};
+
+	const selectedProvider = getProvider();
+	const paymentProcess = new PaymentProcess(
+		new ProviderStrategyA(),
+		purchaseDetails
+	);
 
 	switch (selectedProvider) {
 		case providers[0]:
-			paymentProcess = new PaymentProcess(
-				new ProviderStrategyA(),
-				selectedProvider,
-				purchaseDetails
-			);
+			paymentProcess.setStrategy(new ProviderStrategyA());
 			break;
 		case providers[1]:
-			paymentProcess = new PaymentProcess(
-				new ProviderStrategyB(),
-				selectedProvider,
-				purchaseDetails
-			);
+			paymentProcess.setStrategy(new ProviderStrategyB());
 			break;
 		default:
 			return NextResponse.json(

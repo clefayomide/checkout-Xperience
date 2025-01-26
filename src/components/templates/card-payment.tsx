@@ -11,6 +11,7 @@ import { cleanUpCardData, validateCCNumber, validateExpiryDate } from "@/utils";
 const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
 	const app = useContext(AppContext);
 	const handlePaymentProcess = async () => {
+		setLoading(false);
 		try {
 			const response = await fetch("api/card-purchase", {
 				method: "POST",
@@ -34,7 +35,7 @@ const CardPayment = ({ setLoading, isLoading }: HOCPropType) => {
 		const cardData = Object.fromEntries(
 			new FormData(e.currentTarget).entries()
 		) as CardDataType;
-		
+
 		if (
 			!validateCCNumber(cardData.cardNumber) ||
 			!validateExpiryDate(cardData.expiryDate) ||

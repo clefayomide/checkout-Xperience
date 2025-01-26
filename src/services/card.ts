@@ -1,4 +1,6 @@
-import { createSession } from "@/redis";
+import { config } from "@/config";
+import { providers } from "@/constants";
+import { createCache } from "@/redis";
 import {
 	BaseStrategy,
 	ProviderAStrategy,
@@ -8,21 +10,16 @@ import {
 	Strategy,
 	TransactionConfirmationType,
 } from "@/types";
+import { encrypt } from "@/utils";
 
 // simulates a real world scenario where a payment processor is connected to multiple payment gateways, ie isw, mpgs, cybersource, etc. based on the processing gateway, the application adopts a strategy
 
 export class PaymentProcess implements BaseStrategy {
 	private strategy: Strategy;
-	private readonly provider: string;
 	private readonly purchaseDetails: PurchaseDetails;
 
-	constructor(
-		strategy: Strategy,
-		provider: string,
-		purchaseDetails: PurchaseDetails
-	) {
+	constructor(strategy: Strategy, purchaseDetails: PurchaseDetails) {
 		this.strategy = strategy;
-		this.provider = provider;
 		this.purchaseDetails = purchaseDetails;
 	}
 
@@ -30,12 +27,27 @@ export class PaymentProcess implements BaseStrategy {
 		this.strategy = strategy;
 	}
 
+	private async createSession() {
+		try {
+			const sessionId = crypto.randomUUID();
+			createCache(
+				encrypt(
+					{ ...this.purchaseDetails, provider: this.strategy.providerName },
+					config.publicEncKey
+				),
+				sessionId
+			);
+			return sessionId;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	}
+
 	public async makePayment(): Promise<PurchaseCallResponseType> {
 		try {
-			const result = await this.strategy.pay(
-				this.provider,
-				this.purchaseDetails
-			);
+			const sessionId = await this.createSession();
+			const result = await this.strategy.pay(sessionId, this.purchaseDetails);
 			return result;
 		} catch (error) {
 			console.error(error);
@@ -58,33 +70,31 @@ export class PaymentProcess implements BaseStrategy {
 }
 
 export class ProviderStrategyA implements ProviderAStrategy {
+	public providerName = providers[0];
 	public async pay(
-		provider: string,
-		purchaseDetails: PurchaseDetails
+		sessionId: string
+		// purchaseDetails: PurchaseDetails
 	): Promise<PurchaseCallResponseType> {
-		const sessionId = crypto.randomUUID();
-		await createSession({ ...purchaseDetails, provider } as never, sessionId);
 		return Promise.resolve({
 			status: true,
 			code: 200,
 			message: "successful",
-			data: { pin: true, provider: provider, sessionId },
+			data: { pin: true, provider: this.providerName, sessionId },
 		});
 	}
 }
 
 export class ProviderStrategyB implements ProviderBStrategy {
+	public providerName = providers[1];
 	public async pay(
-		provider: string,
-		purchaseDetails: PurchaseDetails
+		sessionId: string
+		// purchaseDetails: PurchaseDetails
 	): Promise<PurchaseCallResponseType> {
-		const sessionId = crypto.randomUUID();
-		await createSession({ ...purchaseDetails, provider } as never, sessionId);
 		return Promise.resolve({
 			status: true,
 			code: 200,
 			message: "successful",
-			data: { pin: false, provider: provider, sessionId },
+			data: { pin: false, provider: this.providerName, sessionId },
 		});
 	}
 }

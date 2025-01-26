@@ -14,10 +14,10 @@
 	},
 	"dependencies": {
 		"crypto-js": "^4.2.0",
+		"ioredis": "^5.4.2",
 		"next": "15.0.2",
 		"react": "19.0.0-rc-02c0e824-20241028",
-		"react-dom": "19.0.0-rc-02c0e824-20241028",
-		"redis": "^4.7.0"
+		"react-dom": "19.0.0-rc-02c0e824-20241028"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.0",

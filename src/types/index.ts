@@ -139,13 +139,15 @@ export type BaseStrategy = {
 };
 
 export type PayType = (
-	selectedProvider: string,
+	sessionId: string,
 	purchaseDetails: PurchaseDetails
 ) => Promise<PurchaseCallResponseType>;
 export interface ProviderAStrategy {
+	providerName: string;
 	pay: PayType;
 }
 export interface ProviderBStrategy {
+	providerName: string;
 	pay: PayType;
 }
 
