@@ -1,18 +1,25 @@
-import PaymentMethods from "@/components/templates/payment-methods";
-import Form from "next/form";
-import { redirect } from "next/navigation";
+"use client";
 
-const page = () => {
-	async function handleOption(formData: FormData) {
-		"use server";
-		const option = formData.get("method");
-		redirect(`/pay/${option}`);
-	}
+import PaymentMethods from "@/components/templates/payment-methods";
+import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
+
+const Page = () => {
+	const router = useRouter();
+	
+	const handleSelection = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const method = Object.fromEntries(
+			new FormData(e.currentTarget).entries()
+		).method;
+		router.push(`pay/${String(method)}`);
+	};
+
 	return (
-		<Form action={handleOption} className="h-full">
+		<form onSubmit={handleSelection} className="h-full">
 			<PaymentMethods />
-		</Form>
+		</form>
 	);
 };
 
-export default page;
+export default Page;

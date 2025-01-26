@@ -15,10 +15,10 @@ import { encrypt } from "@/utils";
 // simulates a real world scenario where a payment processor is connected to multiple payment gateways, ie isw, mpgs, cybersource, etc. based on the processing gateway, the application adopts a strategy
 
 export class PaymentProcess implements BaseStrategy {
-	private strategy: Strategy;
+	private strategy?: Strategy;
 	private readonly purchaseDetails: PurchaseDetails;
 
-	constructor(strategy: Strategy, purchaseDetails: PurchaseDetails) {
+	constructor(purchaseDetails: PurchaseDetails, strategy?: Strategy) {
 		this.strategy = strategy;
 		this.purchaseDetails = purchaseDetails;
 	}
@@ -28,6 +28,9 @@ export class PaymentProcess implements BaseStrategy {
 	}
 
 	private async createSession() {
+		if (!this.strategy) {
+			throw new Error("no strategy set");
+		}
 		try {
 			const sessionId = crypto.randomUUID();
 			createCache(
@@ -45,6 +48,9 @@ export class PaymentProcess implements BaseStrategy {
 	}
 
 	public async makePayment(): Promise<PurchaseCallResponseType> {
+		if (!this.strategy) {
+			throw new Error("no strategy set");
+		}
 		try {
 			const sessionId = await this.createSession();
 			const result = await this.strategy.pay(sessionId, this.purchaseDetails);

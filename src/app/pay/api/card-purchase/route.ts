@@ -4,37 +4,38 @@ import {
 	ProviderStrategyA,
 	ProviderStrategyB,
 } from "@/services/card";
-import { getProvider } from "@/utils";
+import { getProvider, validateCCNumber, validateExpiryDate } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
 	const { cardNumber = "", cvvNumber = "", expiryDate = "" } = body ?? {};
 
-	if (!cardNumber) {
+	if (!cardNumber || !validateCCNumber(cardNumber)) {
 		return NextResponse.json(
 			{
 				...appGenerics.badRequest,
-				message: "cardNumber is required",
-			},
-			{ status: appGenerics.badRequest.code }
-		);
-	}
-	if (!cvvNumber) {
-		return NextResponse.json(
-			{
-				...appGenerics.badRequest,
-				message: "cvvNumber is required",
+				message: "provide a valid credit card number",
 			},
 			{ status: appGenerics.badRequest.code }
 		);
 	}
 
-	if (!expiryDate) {
+	if (!cvvNumber || cvvNumber.length < 3) {
 		return NextResponse.json(
 			{
 				...appGenerics.badRequest,
-				message: "expiryDate is required",
+				message: "provide a valid cvv number",
+			},
+			{ status: appGenerics.badRequest.code }
+		);
+	}
+
+	if (!expiryDate || !validateExpiryDate(expiryDate)) {
+		return NextResponse.json(
+			{
+				...appGenerics.badRequest,
+				message: "provide a valid expiry date",
 			},
 			{ status: appGenerics.badRequest.code }
 		);
@@ -46,10 +47,7 @@ export async function POST(request: NextRequest) {
 	};
 
 	const selectedProvider = getProvider();
-	const paymentProcess = new PaymentProcess(
-		new ProviderStrategyA(),
-		purchaseDetails
-	);
+	const paymentProcess = new PaymentProcess(purchaseDetails);
 
 	switch (selectedProvider) {
 		case providers[0]:
